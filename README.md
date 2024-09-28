@@ -1,66 +1,113 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Task Management API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This API allows you to manage tasks with basic CRUD (Create, Read, Update, Delete) functionality. It provides endpoints to list tasks, create new tasks, update existing tasks, retrieve details of a specific task, and delete tasks.
 
-## About Laravel
+## Table of Contents
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [API Endpoints](#api-endpoints)
+  - [Get All Tasks](#get-all-tasks)
+  - [Get Task by ID](#get-task-by-id)
+  - [Create a Task](#create-a-task)
+  - [Update a Task](#update-a-task)
+  - [Delete a Task](#delete-a-task)
+- [Request & Response Examples](#request--response-examples)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Requirements
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP 7.4+ or 8.x
+- Laravel 8.x or later
+- Composer
+- Database (MySQL, PostgreSQL, etc.)
 
-## Learning Laravel
+## Installation
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1. Clone the repository and navigate into the project folder:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+    ```sh
+    git clone <repository_url>
+    cd <project_folder>
+    ```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+2. Install dependencies:
 
-## Laravel Sponsors
+    ```sh
+    composer install
+    ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+3. Set up environment variables by creating a `.env` file:
 
-### Premium Partners
+    ```sh
+    cp .env.example .env
+    ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+4. Update your database settings in the `.env` file.
 
-## Contributing
+5. Run migrations to create the required database tables:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+    ```sh
+    php artisan migrate
+    ```
 
-## Code of Conduct
+6. Start the local development server:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+    ```sh
+    php artisan serve
+    ```
 
-## Security Vulnerabilities
+## API Endpoints
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Get All Tasks
 
-## License
+- **URL**: `/api/tasks`
+- **Method**: `GET`
+- **Query Parameters**:
+  - `completed` (optional): A boolean value (`true` or `false`) to filter tasks based on their completion status.
+- **Response**: A list of tasks.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Get Task by ID
+
+- **URL**: `/api/tasks/{id}`
+- **Method**: `GET`
+- **URL Parameters**:
+  - `id` (required): The ID of the task to retrieve.
+- **Response**: Details of the specific task.
+
+### Create a Task
+
+- **URL**: `/api/tasks`
+- **Method**: `POST`
+- **Request Body** (JSON):
+  - `title` (string, required): The title of the task. Max 255 characters.
+  - `description` (string, optional): The description of the task.
+  - `completed` (boolean, optional): The completion status of the task (defaults to `false` if not provided).
+- **Response**: The created task along with a success message.
+
+### Update a Task
+
+- **URL**: `/api/tasks/{id}`
+- **Method**: `PUT` or `PATCH`
+- **URL Parameters**:
+  - `id` (required): The ID of the task to update.
+- **Request Body** (JSON):
+  - `title` (string, optional): The updated title of the task. Max 255 characters.
+  - `description` (string, optional): The updated description of the task.
+  - `completed` (boolean, optional): The updated completion status of the task.
+- **Response**: The updated task along with a success message.
+
+### Delete a Task
+
+- **URL**: `/api/tasks/{id}`
+- **Method**: `DELETE`
+- **URL Parameters**:
+  - `id` (required): The ID of the task to delete.
+- **Response**: A success message indicating the task was deleted.
+
+## Request & Response Examples
+
+### Get All Tasks
+
+**Request**:
+```http
+GET /api/tasks?completed=true
